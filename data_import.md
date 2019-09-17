@@ -5,6 +5,15 @@ Julia Thompson
 
 ## Load in litters dataset
 
+*Read\_csv* makes things a tibble, where *read.csv* makes things a
+regular dataframe. They have small differences, and it is arguably
+better to use *read\_csv* always.
+
+Also, always use *relative paths* instead of *absolute paths*. This
+keeps shit from hitting the fan when you add a folder or move something
+etc. Use *getwd()* to find out your working directory, then just use the
+last part.
+
 ``` r
 litters_data = read_csv(file = "./data/FAS_litters.csv")
 ```
@@ -77,4 +86,14 @@ mlb11_data = read_excel(path = "./data/mlb11.xlsx")
 
 ``` r
 pulse_data = haven::read_sas("./data/public_pulse_data.sas7bdat")
+```
+
+## Exporting data
+
+``` r
+mlb11_data_subset = read_excel(
+  path = "./data/mlb11.xlsx",
+  range = "A1:D7")
+
+write_csv(mlb11_data_subset, path = "./data/mlb_subset.csv")
 ```

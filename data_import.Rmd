@@ -14,6 +14,10 @@ library(readxl)
 
 ## Load in litters dataset
 
+_Read_csv_ makes things a tibble, where _read.csv_ makes things a regular dataframe. They have small differences, and it is arguably better to use _read_csv_ always. 
+
+Also, always use _relative paths_ instead of _absolute paths_. This keeps shit from hitting the fan when you add a folder or move something etc. Use _getwd()_ to find out your working directory, then just use the last part. 
+
 ```{r}
 litters_data = read_csv(file = "./data/FAS_litters.csv")
 litters_data = janitor::clean_names(litters_data)
@@ -61,4 +65,12 @@ mlb11_data = read_excel(path = "./data/mlb11.xlsx")
 pulse_data = haven::read_sas("./data/public_pulse_data.sas7bdat")
 ```
 
+## Exporting data
 
+```{r}
+mlb11_data_subset = read_excel(
+  path = "./data/mlb11.xlsx",
+  range = "A1:D7")
+
+write_csv(mlb11_data_subset, path = "./data/mlb_subset.csv")
+```
