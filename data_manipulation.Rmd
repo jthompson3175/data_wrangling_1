@@ -1,0 +1,90 @@
+---
+title: "Data Manipulation"
+author: "Julia Thompson"
+date: "9/19/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+## Import Datasets
+
+```{r}
+litters_data = read_csv("./data/FAS_litters.csv")
+litters_data = janitor::clean_names(litters_data)
+
+pups_data = read_csv("./data/FAS_pups.csv")
+pups_data = janitor::clean_names(pups_data)
+```
+
+## Selecting
+
+Selecting is literally only for changing/selecting the columns that you have.
+
+```{r}
+select(litters_data, group, litter_number) #what columns you want to select 
+
+select(litters_data, litter_number, gd0_weight, starts_with("pups"))
+
+select(litters_data, litter_number, group, gd0_weight)
+
+select(litters_data, litter_number, group, everything()) #this takes litter number, group, and everything else
+
+select(litters_data, -group) #this keeps everything except group
+
+select(litters_data, litter_number, gd0_weight:pups_born_alive) #keep everything from gd0 weight to pups alive
+
+select(litters_data, GROUP = group, litter_number) #you can also rename as part of this process
+
+rename(litters_data, GROUP = group) #this just renames, it doesn't select
+
+#you can use starts_with(), ends_with(), contains(), and type ?select_helpers
+```
+
+## Filtering
+
+Double equals is a logical oprator. It asks a quesiton: are these two things equal? If so (true), keep it. Keeps the rows for which the logical quesiton is true.
+
+Some ways to filter data:
+
+*   gd_of_birth == 20
+
+*   pups_born_alive >= 2
+
+*   pups_survive != 4
+
+*   !(pups_survive == 4)
+
+*   group %in% c("Con7", "Con8")
+
+*   group == "Con7" & gd_of_birth == 20
+
+```{r}
+filter(litters_data, group == "Con7") #is the value in group equal to this sepcific thing? 
+
+filter(litters_data, gd_of_birth == 20)
+
+filter(litters_data, gd_of_birth < 20)
+
+filter(litters_data, pups_born_alive < 6)
+
+filter(litters_data, pups_born_alive < 6, group == "Con7")
+
+# filter(litters_data, group == "Con7" | group == "Mod8") #this does the same as the below code
+
+filter(litters_data, group %in% c("Con7", "Mod8"))
+
+filter(litters_data, gd0_weight + gd18_weight < 70)
+
+# Don't do this:
+# filter(litters_data, !is.na(gd0_weight))
+
+#Do this:
+drop_na(litters_data, gd0_weight)
+```
+
+
